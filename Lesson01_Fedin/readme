@@ -1,0 +1,4 @@
+Запуск через gunicorn:
+gunicorn run:application
+
+Через wsgiref тоже все прекрасно работает.
