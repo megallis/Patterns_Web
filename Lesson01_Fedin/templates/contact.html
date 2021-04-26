@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Форма обратной связи</title>
+    <style>
+    body { /*text-align: center;*/
+margin: 10;
+font-family: Verdana, Arial, sans-serif;
+font-size: 16px; }
+
+input { display: inline-block;
+margin: 10px auto;
+border: 2px solid #eee;
+padding: 10px 20px;
+font-family: Verdana, Arial, sans-serif;
+font-size: 16px; }
+textarea { display: inline-block;
+margin: 10px auto;
+border: 2px solid #eee;
+padding: 10px 20px;
+font-family: Verdana, Arial, sans-serif;
+font-size: 16px; }
+    </style>
+</head>
+<body>
+<h2>Форма обратной связи</h2>
+<form action="" method="post" name="form">
+    <input name="name" type="text" placeholder="Ваше имя" /> <br>
+    <input name="email" type="text" placeholder="Ваша почта" /> <br>
+    <input size="30" name="header" type="text" placeholder="Тема" /> <br>
+    <textarea cols="32" name="message" rows="5"></textarea> <br>
+    <input type="submit" value="Отправить" />
+</form>
+</body>
+</html>

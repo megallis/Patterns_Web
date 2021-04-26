@@ -1,4 +1,5 @@
-from wsgiref.util import setup_testing_defaults
+import quopri, json
+from my_framework.requests import post_req, get_req
 
 
 class Not_Found:
@@ -12,8 +13,8 @@ class Framework:
         self.fronts = fronts
 
     def __call__(self, environ, start_response):
-        setup_testing_defaults(environ)
-        print("work")
+        # setup_testing_defaults(environ)
+        # print("work")
         path = environ["PATH_INFO"]
         if not path.endswith("/"):
             path += "/"
@@ -22,9 +23,36 @@ class Framework:
         else:
             view = Not_Found()
         request = {}
+
+        if environ["REQUEST_METHOD"] == "POST":
+            data = post_req(environ)
+            norm_data = decode_mime(data)
+            write_file(norm_data)
+            print(f"Получен post запрос {norm_data}")
+
+        if environ["REQUEST_METHOD"] == "GET":
+            data = get_req(environ)
+            print(f"Получен get запрос {data}")
+
         for front in self.fronts:
             front(request)
-        print(request)
+
         code, body = view(request)
         start_response(code, [("Content-Type", "text/html")])
         return [body.encode("utf-8")]
+
+
+def write_file(data):
+    with open("post_data.json", "a") as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+
+
+def decode_mime(data):
+    ret_data = {}
+    for param, value in data.items():
+        normalize_value = bytes(
+            value.replace("%", "=").replace("+", " "), "UTF-8"
+        )
+        decoded_value = quopri.decodestring(normalize_value).decode("UTF-8")
+        ret_data[param] = decoded_value
+    return ret_data

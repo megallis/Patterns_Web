@@ -1,10 +1,11 @@
 from datetime import date
-from views import Index, About, Home
+from views import Index, About, Home, Contact_Form
 
 routes = {
     "/": Index(),
     "/about/": About(),
     "/home/": Home(),
+    "/contact/": Contact_Form(),
 }
 
 
