@@ -1,13 +1,17 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Портал Обучения</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block title %}
+	Портал Обучения
+{% endblock %}
+{% block style %}
+	{% include "inc-style.html" %}
+{% endblock %}
+{% block menu %}
+	{% include "inc-menu.html" %}
+{% endblock %}
+{% block body %}
 Добро пожаловать на наш портал обучения.<br>
 Сегодня : {{data}}<br>
-<a href="about">О нас</a><br>
-<a href="contact">Форма обратной связи</a>
-</body>
-</html>
+{% endblock %}
+{% block footer %}
+	{% include "inc-footer.html" %}
+{% endblock %}
