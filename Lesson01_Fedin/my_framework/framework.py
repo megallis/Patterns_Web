@@ -8,7 +8,6 @@ class Not_Found:
     def __call__(self, request):
         return "404 Not Found", "404 Not Found"
 
-
 class Framework:
     def __init__(self, routes, fronts):
         self.routes = routes
@@ -50,6 +49,23 @@ class Framework:
         start_response(code, [("Content-Type", "text/html")])
         return [body.encode("utf-8")]
 
+class FakeFramework(Framework):
+    def __init__(self, routes, fronts):
+        self.application = Framework(routes, fronts)
+        super().__init__(routes, fronts)
+
+    def __call__(self, environ, start_response):
+        start_response('200 OK', [('Content-Type', 'text/html')])
+        return [b"All OK! Fake framework running!"]
+
+class LogFramework(Framework):
+    def __init__(self, routes, fronts):
+        self.application = Framework(routes, fronts)
+        super().__init__(routes, fronts)
+    def __call__(self, env, start_response):
+        print('Log framework running')
+        print(env)
+        return self.application(env, start_response)
 
 def write_file(data):
     with open("post_data.json", "a") as f:

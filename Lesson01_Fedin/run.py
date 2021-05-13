@@ -1,8 +1,9 @@
 """Основной запускаемый файл"""
 
 from wsgiref.simple_server import make_server
-from urls import routes, fronts
-from my_framework.framework import Framework
+from urls import fronts
+from my_framework.framework import Framework, FakeFramework, LogFramework
+from views import routes
 
 app = Framework(routes, fronts)
 
