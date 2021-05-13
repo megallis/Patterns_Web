@@ -1,10 +1,12 @@
 import quopri, json
 from my_framework.requests import post_req, get_req
+from patterns.creational_patterns import Logger
 
+logger = Logger("main")
 
 class Not_Found:
-    def __call__(self, *args, **kwargs):
-        return "404 Not Found", [b"404 Not Found"]
+    def __call__(self, request):
+        return "404 Not Found", "404 Not Found"
 
 
 class Framework:
@@ -18,21 +20,28 @@ class Framework:
         path = environ["PATH_INFO"]
         if not path.endswith("/"):
             path += "/"
-        if path in self.routes:
-            view = self.routes[path]
-        else:
-            view = Not_Found()
-        request = {}
+        logger.log(path)
 
-        if environ["REQUEST_METHOD"] == "POST":
+        request = {}
+        method = environ["REQUEST_METHOD"]
+        request["method"] = method
+
+        if method == "POST":
             data = post_req(environ)
+            request["data"] = data
             norm_data = decode_mime(data)
             write_file(norm_data)
             print(f"Получен post запрос {norm_data}")
 
-        if environ["REQUEST_METHOD"] == "GET":
+        if method == "GET":
             data = get_req(environ)
+            request["request_params"] = data
             print(f"Получен get запрос {data}")
+
+        if path in self.routes:
+            view = self.routes[path]
+        else:
+            view = Not_Found()
 
         for front in self.fronts:
             front(request)
